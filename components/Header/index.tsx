@@ -12,6 +12,9 @@ const Header = () => {
           <Link href="/colorSheme">
             <a>Color Sheme</a>
           </Link>
+          <Link href="/wooCommerceTest">
+            <a>wooTeste</a>
+          </Link>
         </nav>
       </div>
     </div>
