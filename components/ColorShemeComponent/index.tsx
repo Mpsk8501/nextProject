@@ -1,7 +1,8 @@
 import classes from './colorSheme.module.scss'
 import { styleList } from '../../styleChangeDist'
+import { FC } from 'react'
 
-const ColorShemeComponent = () => {
+const ColorShemeComponent: FC = () => {
   return (
     <div className={classes.colorSheme}>
       <div className="container">

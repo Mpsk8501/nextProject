@@ -1,11 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, FC } from 'react'
 import Head from 'next/head'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ChangedStyle from '../components/changeStyle'
 import { styleList, fontSizeList } from '../styleChangeDist'
 
-export function MainLayout({ children }) {
+const MainLayout: FC = ({ children }) => {
   const getStyle = () => {
     const mainComponent = document.querySelector(':root')
     if (localStorage.getItem('customPreset')) {
@@ -55,3 +55,5 @@ export function MainLayout({ children }) {
     </>
   )
 }
+
+export { MainLayout }

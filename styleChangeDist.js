@@ -13,6 +13,7 @@ const styleList = {
     '--link-hoverColor': 'hsla(205, 100%, 65%, 1)',
     '--helper-border-color': 'hsla(205, 100%, 65%, 1)',
     '--helper-Bg-color': 'hsla(205, 100%, 90%, 0.9)',
+    '--mainBg': 'hsla(93, 39%, 88%, 0.966)',
   },
   styleBlue: {
     '--main-color': 'hsla(0, 0%, 0%, 1)',
@@ -28,6 +29,7 @@ const styleList = {
     '--link-hoverColor': 'hsla(190, 100%, 45%, 1)',
     '--helper-border-color': 'hsla(195, 100%, 50%, 1)',
     '--helper-Bg-color': 'hsla(195, 100%, 90%, 0.9)',
+    '--mainBg': 'hsla(93, 39%, 88%, 0.966)',
   },
   styleBlue_azure: {
     '--main-color': 'hsla(0, 0%, 0%, 1)',
@@ -43,6 +45,7 @@ const styleList = {
     '--link-hoverColor': 'hsla(190, 90%, 50%, 1)',
     '--helper-border-color': 'hsla(190, 80%, 50%, 1)',
     '--helper-Bg-color': 'hsla(190, 100%, 90%, 0.9)',
+    '--mainBg': 'hsla(93, 39%, 88%, 0.966)',
   },
   styleYellow_tangerine: {
     '--main-color': 'hsla(0, 0%, 0%, 1)',
@@ -58,6 +61,7 @@ const styleList = {
     '--link-hoverColor': 'hsla(40, 100%, 50%, 1)',
     '--helper-border-color': 'hsla(40, 90%, 45%, 1)',
     '--helper-Bg-color': 'hsla(40, 100%, 90%, 0.9)',
+    '--mainBg': 'hsla(93, 39%, 88%, 0.966)',
   },
   styleYellow: {
     '--main-color': 'hsla(0, 0%, 0%, 1)',
@@ -73,6 +77,7 @@ const styleList = {
     '--link-hoverColor': 'hsla(45, 100%, 55%, 1)',
     '--helper-border-color': 'hsla(45, 100%, 50%, 1)',
     '--helper-Bg-color': 'hsla(45, 100%, 90%, 0.9)',
+    '--mainBg': 'hsla(93, 39%, 88%, 0.966)',
   },
   styleYellow_lemon: {
     '--main-color': 'hsla(0, 0%, 0%, 1)',
@@ -88,6 +93,7 @@ const styleList = {
     '--link-hoverColor': 'hsla(50, 90%, 50%, 1)',
     '--helper-border-color': 'hsla(50, 80%, 50%, 1)',
     '--helper-Bg-color': 'hsla(50, 100%, 90%, 0.9)',
+    '--mainBg': 'hsla(93, 39%, 88%, 0.966)',
   },
   customBlueAzure1: {
     '--main-color': 'hsla(176, 37%, 33%, 1)',
@@ -103,17 +109,16 @@ const styleList = {
     '--link-hoverColor': 'hsla(230, 71%, 50%, 1)',
     '--helper-border-color': 'hsla(205, 100%, 65%, 1)',
     '--helper-Bg-color': 'hsla(205, 100%, 90%, 0.9)',
+    '--mainBg': 'hsla(93, 39%, 88%, 0.966)',
   },
 }
 
 const fontSizeList = {
   baseFont: {
-    '--main-fontSize': '12px',
-    '--button-fontSize': '12px',
+    '--main-fontSize': '10px',
   },
   bigFont: {
-    '--main-fontSize': '14px',
-    '--button-fontSize': '14px',
+    '--main-fontSize': '12px',
   },
 }
 

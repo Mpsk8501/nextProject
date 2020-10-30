@@ -1,28 +1,28 @@
 import classes from './changeStyle.module.scss'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, FC, LegacyRef } from 'react'
 import { styleList, fontSizeList } from '../../styleChangeDist'
 import SelectAuto from './SelectAuto'
 import Slider from '@material-ui/core/Slider'
 
-export default function ChangedStyle() {
-  const [elStyle, setElStyle] = useState(false)
-  const [isPreset, setIsPreset] = useState(true)
-  const [linkActive, setLinkActive] = useState(false)
+const ChangedStyle: FC = () => {
+  const [elStyle, setElStyle] = useState<boolean>(false)
+  const [isPreset, setIsPreset] = useState<boolean>(true)
+  const [linkActive, setLinkActive] = useState<boolean>(false)
 
-  const [style, setStyle] = useState('blue_base')
-  const [fontSize, setFontSize] = useState('baseFont')
-  const [variable, setVariable] = useState('--main-color')
+  const [siteStyle, setSiteStyle] = useState<string>('blue_base')
+  const [fontSize, setFontSize] = useState<string>('baseFont')
+  const [variable, setVariable] = useState<string>('--main-color')
 
-  const [colorHue, setColorHue] = useState(0)
-  const [colorSaturation, setColorSaturation] = useState(0)
-  const [colorLightness, setColorLightness] = useState(0)
-  const [colorAlpha, setColorAlpha] = useState(1)
+  const [colorHue, setColorHue] = useState<number>(0)
+  const [colorSaturation, setColorSaturation] = useState<number>(0)
+  const [colorLightness, setColorLightness] = useState<number>(0)
+  const [colorAlpha, setColorAlpha] = useState<number>(1)
 
-  const [newPreset, setNewPreset] = useState({})
+  const [newPreset, setNewPreset] = useState<Object>({})
 
-  const coloredElRef = useRef()
+  const coloredElRef = useRef<HTMLHeadingElement>(null)
 
-  const handleSelectChangeColor = (e) => {
+  const handleSelectChangeColor = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     localStorage.removeItem('customPreset')
     setLinkActive(false)
@@ -33,14 +33,16 @@ export default function ChangedStyle() {
     }
     const mainComponent = document.querySelector(':root')
     for (let key in styleList[value]) {
-      // @ts-ignore
+      //@ts-ignore
       mainComponent.style.setProperty(key, styleList[value][key])
     }
 
-    setStyle(e.target.value)
+    setSiteStyle(e.target.value)
   }
 
-  const handleSelectChangeFontSize = (e) => {
+  const handleSelectChangeFontSize = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = e.target.value
     if (e.target.value === 'baseFont') {
       localStorage.removeItem('fontSize')
@@ -49,13 +51,15 @@ export default function ChangedStyle() {
     }
     const mainComponent = document.querySelector(':root')
     for (let key in fontSizeList[value]) {
-      // @ts-ignore
+      //@ts-ignore
       mainComponent.style.setProperty(key, fontSizeList[value][key])
     }
     setFontSize(e.target.value)
   }
 
-  const handleSelectChangeVariable = (e) => {
+  const handleSelectChangeVariable = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const mainComponent = document.querySelector(':root')
     const color = getComputedStyle(mainComponent).getPropertyValue(
       e.target.value
@@ -78,10 +82,9 @@ export default function ChangedStyle() {
     }
     const colorArrNum = color.split(',').map((item, index) => {
       if (index === 3) {
-        // @ts-ignore
         return +item.slice(0, -1)
       }
-      // @ts-ignore
+      //@ts-ignore
       return parseInt(item.match(/\d+/))
     })
 
@@ -120,7 +123,7 @@ export default function ChangedStyle() {
 
   const setVarColor = () => {
     const component = coloredElRef.current
-    // @ts-ignore
+
     component.style.setProperty(
       '--color',
       `hsla(${colorHue}, 
@@ -129,7 +132,7 @@ export default function ChangedStyle() {
       ${colorAlpha} )`
     )
     const mainComponent = document.querySelector(':root')
-    // @ts-ignore
+    //@ts-ignore
     mainComponent.style.setProperty(
       variable,
       `hsla(${colorHue}, 
@@ -161,14 +164,13 @@ export default function ChangedStyle() {
     localStorage.setItem('customPreset', JSON.stringify(preset))
     const file = new Blob([JSON.stringify(preset)], { type: 'appication/json' })
     const link = linkRef.current
-    // @ts-ignore
+
     link.setAttribute('href', URL.createObjectURL(file))
-    // @ts-ignore
     link.setAttribute('download', 'data.json')
     setLinkActive(true)
   }
 
-  const linkRef = useRef()
+  const linkRef = useRef(null)
 
   const linkHandler = () => {
     setLinkActive(false)
@@ -182,7 +184,7 @@ export default function ChangedStyle() {
     const storageNewTheme = localStorage.getItem('style')
     const storageNewFontSize = localStorage.getItem('fontSize')
     if (storageNewTheme) {
-      setStyle(storageNewTheme)
+      setSiteStyle(storageNewTheme)
     }
     if (storageNewFontSize) {
       setFontSize(storageNewFontSize)
@@ -196,7 +198,7 @@ export default function ChangedStyle() {
           <h1 className="h1">Theme preset</h1>
           <SelectAuto
             label={'Theme'}
-            value={style}
+            value={siteStyle}
             handleChange={handleSelectChangeColor}
             itemList={Object.keys(styleList)}
           />
@@ -305,3 +307,5 @@ export default function ChangedStyle() {
     </div>
   )
 }
+
+export default ChangedStyle

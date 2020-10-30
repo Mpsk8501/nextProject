@@ -1,7 +1,8 @@
+import { FC } from 'react'
 import ColorShemeComponent from '../../components/ColorShemeComponent'
 import { MainLayout } from '../../layouts/mainLayout'
 
-const ColorSheme = () => {
+const ColorSheme: FC = () => {
   return (
     <MainLayout>
       <ColorShemeComponent />

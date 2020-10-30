@@ -1,5 +1,6 @@
+import { FC } from 'react'
 import classes from './mainPage.module.scss'
-const MainPageComponent = () => {
+const MainPageComponent: FC = () => {
   return (
     <div className={classes.mainPage}>
       <div className="container">

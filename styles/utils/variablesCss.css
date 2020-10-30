@@ -1,8 +1,8 @@
 :root {
   --main-font: 'Roboto';
-  --main-fontSize: 12px;
-  --main-color: #000;
-  --white-color: #fff;
+  --main-fontSize: 10px;
+  --main-color: hsla(0, 0%, 0%, 1);
+  --white-color: hsla(0, 0%, 100%, 1);
   --base-accentColor: hsla(205, 90%, 45%, 1);
   --dangerColor: hsla(25, 100%, 40%, 1);
   --baseBg: hsla(205, 85%, 50%, 1);
@@ -12,12 +12,12 @@
 
   /*button_0*/
   --button-font: 'Montserrat';
-  --button-fontSize: 12px;
   --button-Shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   --button-bgColor: hsla(205, 85%, 50%, 1);
   --button-hoverBG: hsla(205, 100%, 60%, 1);
 
   /*link_0*/
+  --link-font: 'Montserrat';
   --link-color: hsla(200, 80%, 50%, 1);
   --link-hoverColor: hsla(205, 100%, 65%, 1);
   /*helpers_0*/

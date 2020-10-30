@@ -15,17 +15,13 @@ html {
 
 body {
   height: 100%;
+  font-size: calc(var(--main-fontSize) * 1.4);
 }
 
 #__next {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-a,
-button {
-  font-family: var(--main-font), sans-serif;
 }
 
 .flex-wrapper {
