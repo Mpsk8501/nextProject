@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
+import classes from './wooTest.module.scss'
 
-export default function WooTest() {
-  const [goodsList, setGoodList] = useState('')
+const WooTest: FC = () => {
+  const [goodsList, setGoodList] = useState<string>('')
   const connectCommerce = async () => {
     const response = await fetch('api/wooauth')
     const list = await response.json()
@@ -20,12 +21,32 @@ export default function WooTest() {
     }
     setGoodList(str)
   }
+
+  const createUser = async () => {
+    const response = await fetch('api/wooauth?id=createUser')
+    const userList = await response.json()
+    console.log(userList)
+  }
+
   return (
     <>
-      <h1>Test</h1>
-      <button onClick={connectCommerce}>test connect wooCommerce</button>
-      <button onClick={setGood}>setGoode</button>
-      <div>{goodsList}</div>
+      <section className={classes.wooTest}>
+        <div className="container">
+          <h1 className="h1">Test wooCommerce</h1>
+          <button className="btn" onClick={connectCommerce}>
+            test connect wooCommerce
+          </button>
+          <button className="btn" onClick={setGood}>
+            setGoode
+          </button>
+          <button className="btn" onClick={createUser}>
+            createUser
+          </button>
+          <div>{goodsList}</div>
+        </div>
+      </section>
     </>
   )
 }
+
+export default WooTest

@@ -1,8 +1,19 @@
 .header {
-  min-height: 200px;
   background-color: var(--baseBg);
-  color: var(--white-color);
-  h1 {
-    padding-top: calc(var(--base-padding) * 2);
+  nav {
+    display: flex;
+    align-items: center;
+    padding: var(--base-padding) 0;
+    a {
+      &:first-of-type {
+        width: 30%;
+        text-align: left;
+        font-size: calc(var(--main-fontSize) * 2);
+        color: var(--white-color);
+        font-weight: 700;
+      }
+      flex-grow: 1;
+      text-align: center;
+    }
   }
 }

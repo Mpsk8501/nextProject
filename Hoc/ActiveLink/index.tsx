@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React, { Children, FC } from 'react'
 
 interface ActiveLinkProps {
-  activeClassName: string
+  activeClassName?: string
   children?: any
   href?: string
   as?: string

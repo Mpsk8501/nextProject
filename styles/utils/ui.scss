@@ -24,11 +24,11 @@
   background-color: var(--button-bgColor);
   font-size: calc(var(--main-fontSize) * 1.5);
   color: var(--main-color);
-  width: 100%;
+  //width: 100%;
   text-align: center;
   text-transform: uppercase;
   font-weight: 500;
-  padding: 3px;
+  padding: 5px;
   border: 1px solid var(--button-hoverBG);
   transition: bacground 0.4s, color 0.4s, border 0.4s;
   &:hover {
@@ -62,7 +62,7 @@
 
 .activeLink {
   @extend .link;
-  color: var(--dangerColor);
+  color: var(--white-color);
   &:hover {
     color: var(--main-color);
   }
