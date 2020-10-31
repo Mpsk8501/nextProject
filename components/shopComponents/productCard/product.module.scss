@@ -1,0 +1,25 @@
+.product {
+  width: 30%;
+  padding: 5px;
+  border: 1px solid gray;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: 0.4s;
+  text-align: center;
+  img {
+    cursor: pointer;
+    height: 150px;
+    object-fit: cover;
+  }
+
+  &:hover {
+    background-color: rgb(112, 112, 131);
+    transform: scale(1.05);
+    color: #fff;
+  }
+  p {
+    padding: 20px 0;
+  }
+}

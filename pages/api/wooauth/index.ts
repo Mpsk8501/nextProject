@@ -9,6 +9,8 @@ const data = {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  console.log('sss', process.env.WP_URL)
+
   const productsList = {}
   if (req.query.id === 'createUser') {
     const customers = await WooCommerce.post('customers', data)

@@ -2,22 +2,13 @@ import Link from '../../Hoc/ActiveLink'
 import { FC } from 'react'
 import classes from './header.module.scss'
 
-const Header: FC = () => {
+const ShopHeader: FC = () => {
   return (
     <div className={classes.header}>
       <div className="container">
         <nav>
           <Link href="/">
             <a>LOGO</a>
-          </Link>
-          <Link activeClassName="activeLink" href="/">
-            <a className="link">Главная</a>
-          </Link>
-          <Link activeClassName="activeLink" href="/colorSheme">
-            <a className="link">Color Sheme</a>
-          </Link>
-          <Link activeClassName="activeLink" href="/wooauth">
-            <a className="link">Woo auth</a>
           </Link>
           <Link activeClassName="activeLink" href="/products">
             <a className="link">Shop</a>
@@ -27,4 +18,4 @@ const Header: FC = () => {
     </div>
   )
 }
-export default Header
+export default ShopHeader

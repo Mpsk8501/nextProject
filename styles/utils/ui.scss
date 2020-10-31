@@ -29,7 +29,7 @@
   text-transform: uppercase;
   font-weight: 500;
   padding: 5px;
-  border: 1px solid var(--button-hoverBG);
+  border: 2px solid var(--button-hoverBG);
   transition: bacground 0.4s, color 0.4s, border 0.4s;
   &:hover {
     background-color: var(--button-hoverBG);

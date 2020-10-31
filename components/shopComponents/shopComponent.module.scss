@@ -1,0 +1,15 @@
+.shopComponent {
+  h1 {
+    text-align: left;
+    padding: var(--base-padding) 0;
+  }
+  button {
+    margin-right: var(--base-padding);
+  }
+  .productList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 30px;
+  }
+}

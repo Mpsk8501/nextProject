@@ -34,7 +34,7 @@ const WooTest: FC = () => {
         <div className="container">
           <h1 className="h1">Test wooCommerce</h1>
           <button className="btn" onClick={connectCommerce}>
-            test connect wooCommerce
+            test connect wooCommerce from apiKey woocommerce
           </button>
           <button className="btn" onClick={setGood}>
             setGoode
