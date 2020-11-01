@@ -7,7 +7,7 @@ import gql from 'graphql-tag'
 
 const PRODUCT_QUERY = gql`
   query {
-    products(first: 20) {
+    products {
       nodes {
         id
         name
