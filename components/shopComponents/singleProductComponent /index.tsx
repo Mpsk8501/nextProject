@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import classes from './singleProductComponent .module.scss'
+import classes from './singleProduct.module.scss'
 
 interface ComponentProps {
   productData: {
@@ -12,8 +12,6 @@ interface ComponentProps {
 }
 
 const SingleProductComponent = ({ productData }: ComponentProps) => {
-  console.log('yttt', productData)
-
   return (
     <div className={classes.product}>
       <h1 className="h1">{productData.name}</h1>

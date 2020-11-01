@@ -14,8 +14,6 @@ interface ComponentProps {
 }
 
 const ProductCard = ({ productData }: ComponentProps) => {
-  console.log('yttt', productData)
-
   return (
     <div className={classes.product}>
       <h1 className="h1">{productData.name}</h1>

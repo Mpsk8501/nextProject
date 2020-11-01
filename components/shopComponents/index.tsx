@@ -6,8 +6,6 @@ interface ComponentProps {
 }
 
 const ShopComponent = ({ data }: ComponentProps) => {
-  console.log('yttt', data)
-
   return (
     <section className={classes.shopComponent}>
       <div className="container">

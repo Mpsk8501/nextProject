@@ -1,17 +1,20 @@
-import { FC } from 'react'
 import { GetStaticProps, InferGetStaticPropsType, GetStaticPaths } from 'next'
 import client from '../../ApolloClient'
-import SingleProductComponent from '../../components/shopComponents'
+import SingleProductComponent from '../../components/shopComponents/singleProductComponent '
 import { ShopLayout } from '../../layouts/shopLayout'
 import gql from 'graphql-tag'
 import { useRouter } from 'next/router'
 
-const SingleProductPage: FC = ({ product }) => {
+const SingleProductPage: InferGetStaticPropsType<typeof getStaticProps> = ({
+  product,
+}) => {
   //const router = useRouter()
   //console.log(router)
 
   return (
-    <ShopLayout>{/* <SingleProductComponent data={product} />  */}</ShopLayout>
+    <ShopLayout>
+      <SingleProductComponent productData={product} />
+    </ShopLayout>
   )
 }
 
@@ -29,8 +32,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const result = await client.query({
     query: PRODUCTS_SLUG_QUERY,
   })
-
-  console.log('nodes', result.data.products.nodes)
   const nodes = result.data.products.nodes
   const paths = nodes.map((item) => {
     return {
@@ -46,9 +47,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-export async function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  //@ts-ignore
   const id = params.slug ? parseInt(params.slug.split('-').pop()) : ''
-  console.log(id)
 
   const PRODUCT_QUERY = gql`
   query {
@@ -66,8 +67,6 @@ export async function getStaticProps({ params }) {
   const result = await client.query({
     query: PRODUCT_QUERY,
   })
-
-  console.log(result.data.product)
 
   return {
     props: { product: result.data.product },
