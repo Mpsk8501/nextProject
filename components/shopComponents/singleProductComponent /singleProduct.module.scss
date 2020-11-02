@@ -1,2 +1,30 @@
 .singleProduct {
+  h1 {
+    padding: 20px;
+  }
+  .productBlock {
+    display: flex;
+    img {
+      max-width: 50%;
+      flex-grow: 1;
+      padding: 0 20px;
+      object-fit: cover;
+    }
+
+    .textBlock {
+      flex-grow: 1;
+      text-align: right;
+      p {
+        &:first-of-type {
+          text-align: left;
+        }
+        &:last-of-type {
+          padding-top: 20px;
+        }
+      }
+      a {
+        margin-top: 20px;
+      }
+    }
+  }
 }

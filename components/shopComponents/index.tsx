@@ -13,7 +13,7 @@ const ShopComponent = ({ data }: ComponentProps) => {
         <div className={classes.productList}>
           {data.length
             ? data.map((item) => {
-                return <ProductCard key={item.id} productData={item} />
+                return <ProductCard key={item.id} product={item} />
               })
             : ''}
         </div>

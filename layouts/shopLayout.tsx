@@ -2,10 +2,11 @@ import { FC } from 'react'
 import Head from 'next/head'
 import ShopHeader from '../components/Header/ShopHeader '
 import Footer from '../components/Footer'
+import { AppProvider } from '../components/context/AppContext'
 
 const ShopLayout: FC = ({ children }) => {
   return (
-    <>
+    <AppProvider>
       <Head>
         <title>Sass test</title>
         <meta name="description" content="Wp + WooCommerce + GraphQl" />
@@ -20,7 +21,7 @@ const ShopLayout: FC = ({ children }) => {
         {children}
       </div>
       <Footer />
-    </>
+    </AppProvider>
   )
 }
 

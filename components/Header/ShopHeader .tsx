@@ -1,8 +1,12 @@
 import Link from '../../Hoc/ActiveLink'
-import { FC } from 'react'
+import { FC, useContext } from 'react'
 import classes from './header.module.scss'
 
+import { AppContext } from './../context/AppContext'
+
 const ShopHeader: FC = () => {
+  const [cart, setCart] = useContext(AppContext)
+
   return (
     <div className={classes.header}>
       <div className="container">

@@ -13,7 +13,7 @@ const SingleProductPage: InferGetStaticPropsType<typeof getStaticProps> = ({
 
   return (
     <ShopLayout>
-      <SingleProductComponent productData={product} />
+      <SingleProductComponent product={product} />
     </ShopLayout>
   )
 }
@@ -60,6 +60,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         sourceUrl
       }
       description
+      ... on SimpleProduct {
+        price
+      }
     }
   }
 `
