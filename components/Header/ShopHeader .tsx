@@ -17,6 +17,9 @@ const ShopHeader: FC = () => {
           <Link activeClassName="activeLink" href="/products">
             <a className="link">Shop</a>
           </Link>
+          <Link activeClassName="activeLink" href="/categories">
+            <a className="link">Categories</a>
+          </Link>
         </nav>
       </div>
     </div>

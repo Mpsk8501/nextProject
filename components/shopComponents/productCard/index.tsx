@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { ProductProps } from '../../../interfaces'
-import AddToCartButton from '../../cart'
+import AddToCartButton from '../../cartComponents/addToCartButton'
 import classes from './product.module.scss'
 
 const ProductCard = ({ product }: ProductProps) => {

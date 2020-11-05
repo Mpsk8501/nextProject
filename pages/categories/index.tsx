@@ -1,51 +1,43 @@
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import client from '../../ApolloClient'
-import ShopComponent from '../../components/shopComponents'
 import { ShopLayout } from '../../layouts/shopLayout'
 import gql from 'graphql-tag'
+import CategoryComponent from '../../components/categorycomponent'
 
-const PRODUCT_QUERY = gql`
+const CATEGORY_QUERY = gql`
   query {
-    products {
+    productCategories {
       nodes {
-        id
-        name
-        slug
-        averageRating
-        image {
-          title
-          sourceUrl
-        }
         databaseId
-        ... on SimpleProduct {
-          id
-          name
-          price
+        slug
+        name
+        image {
+          sourceUrl
         }
       }
     }
   }
 `
 
-const ProductsPage = ({
-  products,
+const CategoryPage = ({
+  categories,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <ShopLayout>
-      <ShopComponent data={products} />
+      <CategoryComponent data={categories} />
     </ShopLayout>
   )
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   const result = await client.query({
-    query: PRODUCT_QUERY,
+    query: CATEGORY_QUERY,
   })
 
   return {
-    props: { products: result.data.products.nodes },
+    props: { categories: result.data.productCategories.nodes },
     revalidate: 100,
   }
 }
 
-export default ProductsPage
+export default CategoryPage

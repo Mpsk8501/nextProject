@@ -3,6 +3,7 @@ import Head from 'next/head'
 import ShopHeader from '../components/Header/ShopHeader '
 import Footer from '../components/Footer'
 import { AppProvider } from '../components/context/AppContext'
+import SubHeader from '../components/Header/subHeader'
 
 const ShopLayout: FC = ({ children }) => {
   return (
@@ -18,6 +19,7 @@ const ShopLayout: FC = ({ children }) => {
       </Head>
       <div className="flex-wrapper">
         <ShopHeader />
+        <SubHeader />
         {children}
       </div>
       <Footer />

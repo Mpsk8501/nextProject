@@ -8,10 +8,9 @@ export const AppProvider = (props) => {
     if (process.browser) {
       let cartData = localStorage.getItem('woo-next-cart')
       cartData = cartData !== null ? JSON.parse(cartData) : ''
-      setCart({ cartData })
+      setCart(cartData)
     }
   }, [])
-  console.log(cart)
 
   return (
     <AppContext.Provider value={[cart, setCart]}>

@@ -3,14 +3,10 @@ import client from '../../ApolloClient'
 import SingleProductComponent from '../../components/shopComponents/singleProductComponent '
 import { ShopLayout } from '../../layouts/shopLayout'
 import gql from 'graphql-tag'
-import { useRouter } from 'next/router'
 
 const SingleProductPage: InferGetStaticPropsType<typeof getStaticProps> = ({
   product,
 }) => {
-  //const router = useRouter()
-  //console.log(router)
-
   return (
     <ShopLayout>
       <SingleProductComponent product={product} />
@@ -73,6 +69,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   return {
     props: { product: result.data.product },
+    revalidate: 100,
   }
 }
 
