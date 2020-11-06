@@ -18,11 +18,14 @@ const Category = ({
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   //@ts-ignore
-  const id = params.category ? parseInt(params.category.split('-').pop()) : ''
+  const id = params.category ? params.category : ''
+  console.log(id)
+  const slug = `"${id}"`
+  console.log(slug)
 
   const CATEGORY_QUERY = gql`
     query {
-      productCategory(id: ${id}, idType: DATABASE_ID) {
+      productCategory(id: ${slug} idType: SLUG) {
         name
         products {
           edges {
@@ -40,7 +43,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
           }
         }
       }
-    }`
+    }
+  `
 
   const result = await client.query({
     query: CATEGORY_QUERY,

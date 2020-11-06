@@ -1,8 +1,12 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { ProductProps } from '../../../interfaces'
 import classes from './singleProduct.module.scss'
 
 const SingleProductComponent = ({ product }: ProductProps) => {
+  const router = useRouter()
+  console.log(router.query)
+
   return (
     <div className={classes.singleProduct}>
       <div className="container">
@@ -14,7 +18,7 @@ const SingleProductComponent = ({ product }: ProductProps) => {
             <p className="p">
               <strong>{product.price}</strong>
             </p>
-            <Link href="/products">
+            <Link href={`/categories/${router.query.category}`}>
               <a className={'btn'}>Back</a>
             </Link>
           </div>

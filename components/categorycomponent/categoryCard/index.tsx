@@ -6,8 +6,8 @@ const CategoryCard = ({ category }) => {
     <div className={classes.categoryCard}>
       <h1 className="h1">{category.name}</h1>
       <Link
-        as={`/category/${category.slug}-${category.databaseId}`}
-        href={`/category?category=${category.slug}-${category.databaseId}`}
+        as={`/categories/${category.slug}`}
+        href={`/categories?category=${category.slug}`}
       >
         <a>
           {category.image ? (

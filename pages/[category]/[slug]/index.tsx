@@ -1,7 +1,7 @@
 import { GetStaticProps, InferGetStaticPropsType, GetStaticPaths } from 'next'
-import client from '../../ApolloClient'
-import SingleProductComponent from '../../components/shopComponents/singleProductComponent '
-import { ShopLayout } from '../../layouts/shopLayout'
+import client from '../../../ApolloClient'
+import SingleProductComponent from '../../../components/shopComponents/singleProductComponent '
+import { ShopLayout } from '../../../layouts/shopLayout'
 import gql from 'graphql-tag'
 
 const SingleProductPage: InferGetStaticPropsType<typeof getStaticProps> = ({
@@ -19,8 +19,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
     query {
       products {
         nodes {
+          productCategories {
+            nodes {
+              slug
+            }
+          }
           slug
-          databaseId
         }
       }
     }
@@ -32,7 +36,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = nodes.map((item) => {
     return {
       params: {
-        slug: `${item.slug}-${item.databaseId}`,
+        category: `${item.productCategories.nodes[0].slug}`,
+        slug: `${item.slug}`,
       },
     }
   })
@@ -45,11 +50,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   //@ts-ignore
-  const id = params.slug ? parseInt(params.slug.split('-').pop()) : ''
+  const id = params.slug ? params.slug : ''
+  console.log(id)
+  const slug = `"${id}"`
 
   const PRODUCT_QUERY = gql`
   query {
-    product(id: "${id}", idType: DATABASE_ID) {
+    product(id: ${slug}, idType: SLUG) {
       name
       image {
         id

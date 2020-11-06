@@ -19,7 +19,11 @@ const Header: FC = () => {
           <Link activeClassName="activeLink" href="/wooauth">
             <a className="link">Woo auth</a>
           </Link>
-          <Link activeClassName="activeLink" href="/products">
+          <Link
+            as="/categories"
+            activeClassName="activeLink"
+            href="/categories"
+          >
             <a className="link">Shop</a>
           </Link>
         </nav>
