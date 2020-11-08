@@ -1,8 +1,9 @@
 import { GetStaticProps, InferGetStaticPropsType, GetStaticPaths } from 'next'
-import client from '../../../ApolloClient'
-import SingleProductComponent from '../../../components/shopComponents/singleProductComponent '
-import { ShopLayout } from '../../../layouts/shopLayout'
-import gql from 'graphql-tag'
+import client from '../../../../components/ApolloClient'
+import SingleProductComponent from '../../../../components/shopComponents/singleProductComponent '
+import { ShopLayout } from '../../../../components/layouts/shopLayout'
+import { PRODUCTS_CATEGORIES_SLUGS_QUERY } from '../../../../queries/slugs'
+import { PRODUCT_QUERY_BY_SLUG } from '../../../../queries/products'
 
 const SingleProductPage: InferGetStaticPropsType<typeof getStaticProps> = ({
   product,
@@ -15,22 +16,8 @@ const SingleProductPage: InferGetStaticPropsType<typeof getStaticProps> = ({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const PRODUCTS_SLUG_QUERY = gql`
-    query {
-      products {
-        nodes {
-          productCategories {
-            nodes {
-              slug
-            }
-          }
-          slug
-        }
-      }
-    }
-  `
   const result = await client.query({
-    query: PRODUCTS_SLUG_QUERY,
+    query: PRODUCTS_CATEGORIES_SLUGS_QUERY,
   })
   const nodes = result.data.products.nodes
   const paths = nodes.map((item) => {
@@ -49,29 +36,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  //@ts-ignore
-  const id = params.slug ? params.slug : ''
-  console.log(id)
-  const slug = `"${id}"`
-
-  const PRODUCT_QUERY = gql`
-  query {
-    product(id: ${slug}, idType: SLUG) {
-      name
-      image {
-        id
-        sourceUrl
-      }
-      description
-      ... on SimpleProduct {
-        price
-      }
-    }
-  }
-`
-
+  const id = params.slug
   const result = await client.query({
-    query: PRODUCT_QUERY,
+    query: PRODUCT_QUERY_BY_SLUG,
+    variables: { id },
   })
 
   return {

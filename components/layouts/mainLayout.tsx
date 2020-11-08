@@ -1,9 +1,9 @@
 import { useEffect, FC } from 'react'
 import Head from 'next/head'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import ChangedStyle from '../components/changeStyle'
-import { styleList, fontSizeList } from '../styleChangeDist'
+import Header from '../Header'
+import Footer from '../Footer'
+import ChangedStyle from '../changeStyle'
+import { styleList, fontSizeList } from '../../styleChangeDist'
 
 const MainLayout: FC = ({ children }) => {
   const getStyle = () => {

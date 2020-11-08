@@ -8,7 +8,9 @@ interface ProductProps {
     databaseId: number
     slug: string
     description?: string
+    categorySlug?: string
   }
+  type?: string
 }
 interface ProductPropsFunc {
   name: string
@@ -19,6 +21,7 @@ interface ProductPropsFunc {
   databaseId: number
   slug?: string
   description?: string
+  categorySlug?: string
 }
 
 interface CartItemProps {
@@ -31,6 +34,8 @@ interface CartItemProps {
     databaseId: number
     qty: number
     totalPrice: number
+    productCategorySlug: string
+    productSlug: string
   }
   setCart: () => void
 }

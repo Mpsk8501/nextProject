@@ -13,6 +13,49 @@ const getFloatVal = (string: string): number => {
     : 0
 }
 
+const getFormattedCart = (data) => {
+  let formattedCart = null
+
+  if (undefined === data || !data.cart.contents.nodes.length) {
+    return formattedCart
+  }
+
+  const givenProducts = data.cart.contents.nodes
+  console.log(data)
+
+  // Create an empty object.
+  formattedCart = {}
+  formattedCart.products = []
+  let totalProductsCount = 0
+
+  for (let i = 0; i < givenProducts.length; i++) {
+    const givenProduct = givenProducts[i].product
+    const product = {}
+    const total = getFloatVal(givenProducts[i].total)
+
+    product.databaseId = givenProduct.databaseId
+    //product.cartKey = givenProducts[i].key
+    product.name = givenProduct.name
+    product.qty = givenProducts[i].quantity
+    product.price = total / product.qty
+    product.totalPrice = givenProducts[i].total
+    product.slug = givenProduct.slug
+    product.image = {
+      sourceUrl: givenProduct.image.sourceUrl,
+    }
+
+    totalProductsCount += givenProducts[i].quantity
+
+    // Push each item into the products array.
+    formattedCart.products.push(product)
+  }
+
+  formattedCart.totalProductsCount = totalProductsCount
+  formattedCart.totalProductsPrice = data.cart.total
+
+  return formattedCart
+}
+
 const addFirstProduct = (product: ProductPropsFunc) => {
   const productPrice = getFloatVal(product.price)
   const newCart = {
@@ -23,7 +66,6 @@ const addFirstProduct = (product: ProductPropsFunc) => {
   const newProduct = createNewProduct(product, productPrice, 1)
   newCart.products.push(newProduct)
   localStorage.setItem('woo-next-cart', JSON.stringify(newCart))
-  console.log(newCart)
   return newCart
 }
 
@@ -111,6 +153,10 @@ const createNewProduct = (
     price: productPrice,
     qty,
     totalPrice: productPrice * qty,
+    productSlug: product.slug,
+    productCategorySlug:
+      //@ts-ignore
+      product.categorySlug || product.productCategories.edges[0].node.slug,
   }
 }
 
@@ -126,7 +172,6 @@ const removeItemFromCart = (databaseId) => {
     existinCartParse.products,
     databaseId
   )
-  console.log(productExistIndex)
 
   if (productExistIndex !== -1) {
     const productToBeRemoved = existinCartParse.products[productExistIndex]
@@ -160,4 +205,5 @@ export {
   updateCart,
   isProductInCart,
   removeItemFromCart,
+  getFormattedCart,
 }

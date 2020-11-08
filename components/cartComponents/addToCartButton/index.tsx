@@ -1,55 +1,106 @@
 import { useContext, useEffect, useState } from 'react'
 import { ProductProps } from '../../../interfaces'
 import { AppContext } from '../../context/AppContext'
+import { useMutation, useQuery, gql } from '@apollo/client'
+import { v4 } from 'uuid'
+import { ADD_TO_CART } from '../../../mutations/cartMutation'
+import { GET_CART } from '../../../queries/cart'
+
 import {
   addFirstProduct,
   updateCart,
   isProductInCart,
+  getFormattedCart,
 } from '../../../helpers/cartHelpers'
 import Link from 'next/link'
 
 const AddToCartButton = ({ product }: ProductProps) => {
   const [cart, setCart] = useContext(AppContext)
   const [isInCart, setIsItCart] = useState(false)
+  const [blockButton, setBlockButton] = useState(false)
 
-  useEffect(() => {
-    if (process.browser) {
-      const existCart = localStorage.getItem('woo-next-cart')
-      if (existCart) {
-        const existCartParse = JSON.parse(existCart)
-        if (
-          isProductInCart(existCartParse.products, product.databaseId) !== -1
-        ) {
-          setIsItCart(true)
-        }
-      }
-    }
-  }, [])
+  const productQryInput = {
+    clientMutationId: v4(), // Generate a unique id.
+    productId: product.databaseId,
+  }
+
+  const { loading, error, data, refetch } = useQuery(GET_CART, {
+    onCompleted: () => {
+      // Update cart in the localStorage.
+      const updatedCart = getFormattedCart(data)
+      console.log('fff', updatedCart)
+
+      localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart))
+
+      //Update cart data in React Context.
+      setCart(updatedCart)
+    },
+  })
+
+  const [
+    addToCart,
+    { data: cartData, loading: addLoading, error: addToCartError },
+  ] = useMutation(ADD_TO_CART, {
+    variables: {
+      input: productQryInput,
+    },
+    onCompleted: () => {
+      console.warn('completed ADD_TO_CART', data)
+      // On Success:
+      // 1. Make the GET_CART query to update the cart with new values in React context.
+      refetch()
+      // 2. Show View Cart Button
+      //setShowViewCart(true)
+    },
+  })
 
   const handleAddToCartClick = () => {
-    if (process.browser) {
-      const existCart = localStorage.getItem('woo-next-cart')
-      if (existCart) {
-        const existCartParse = JSON.parse(existCart)
-        const qtyToBeAdded = 1
-        const updatedCart = updateCart(product, existCartParse, qtyToBeAdded)
-        //@ts-ignore
-        setCart(updatedCart)
-      } else {
-        const newCart = addFirstProduct(product)
-        //@ts-ignore
-        setCart(newCart)
-      }
-      setIsItCart(true)
-    }
+    addToCart()
   }
+
+  // useEffect(() => {
+  //   if (process.browser) {
+  //     const existCart = localStorage.getItem('woo-next-cart')
+  //     if (existCart) {
+  //       const existCartParse = JSON.parse(existCart)
+  //       if (
+  //         isProductInCart(existCartParse.products, product.databaseId) !== -1
+  //       ) {
+  //         setIsItCart(true)
+  //       }
+  //     }
+  //   }
+  // }, [])
+
+  // const handleAddToCartClick = () => {
+  //   if (process.browser) {
+  //     const existCart = localStorage.getItem('woo-next-cart')
+  //     if (existCart) {
+  //       const existCartParse = JSON.parse(existCart)
+  //       const qtyToBeAdded = 1
+  //       const updatedCart = updateCart(product, existCartParse, qtyToBeAdded)
+  //       //@ts-ignore
+  //       setCart(updatedCart)
+  //     } else {
+  //       const newCart = addFirstProduct(product)
+  //       //@ts-ignore
+  //       setCart(newCart)
+  //     }
+  //     setIsItCart(true)
+  //   }
+  // }
   return (
     <>
-      <button onClick={handleAddToCartClick} className="btn">
-        Add to Cart
-      </button>
+      {addLoading || loading ? (
+        <button className="btn">Loading...</button>
+      ) : (
+        <button onClick={handleAddToCartClick} className="btn">
+          Add to Cart
+        </button>
+      )}
+
       {isInCart ? (
-        <Link href="/cart">
+        <Link href="/shop/cart">
           <button className="btn">Viev in cart</button>
         </Link>
       ) : (

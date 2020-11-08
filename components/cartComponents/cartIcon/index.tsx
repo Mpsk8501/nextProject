@@ -15,7 +15,7 @@ const CartIcon = () => {
 
   return (
     <div className={classes.iconBlock}>
-      <Link href="/cart">
+      <Link href="/shop/cart">
         <a>
           <span>{totalPrice ? `£${totalPrice}` : ''}</span>
           <span>

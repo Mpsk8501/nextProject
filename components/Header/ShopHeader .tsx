@@ -11,13 +11,13 @@ const ShopHeader: FC = () => {
     <div className={classes.header}>
       <div className="container">
         <nav>
-          <Link href="/">
+          <Link href="/shop">
             <a>LOGO</a>
           </Link>
-          <Link activeClassName="activeLink" href="/categories">
-            <a className="link">Shop</a>
+          <Link activeClassName="activeLink" href="/colorSheme">
+            <a className="link">Color Sheme</a>
           </Link>
-          <Link activeClassName="activeLink" href="/categories">
+          <Link activeClassName="activeLink" href="/shop/categories">
             <a className="link">Categories</a>
           </Link>
         </nav>

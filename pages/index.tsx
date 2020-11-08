@@ -1,5 +1,5 @@
 import MainPageComponent from '../components/MainPageComponents'
-import { MainLayout } from '../layouts/mainLayout'
+import { MainLayout } from '../components/layouts/mainLayout'
 
 export default function Home() {
   return (

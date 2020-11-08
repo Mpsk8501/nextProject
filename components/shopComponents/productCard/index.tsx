@@ -1,19 +1,20 @@
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { ProductProps } from '../../../interfaces'
 import AddToCartButton from '../../cartComponents/addToCartButton'
 import classes from './product.module.scss'
 
-const ProductCard = ({ product }: ProductProps) => {
-  const router = useRouter()
-  console.log(router.query)
-
+const ProductCard = ({ product, type }: ProductProps) => {
+  const categorySlug =
+    //@ts-ignore
+    product.categorySlug || product.productCategories.edges[0].node.slug
   return (
     <div className={classes.product}>
+      {type ? <span className={classes.tag}>{type}</span> : null}
       <h1 className="h1">{product.name}</h1>
       <Link
-        as={`${router.query.category}/${product.slug}`}
-        href={`categories/${router.query.category}?slug=${product.slug}`}
+        href={`/shop/${encodeURIComponent(categorySlug)}/${encodeURIComponent(
+          product.slug
+        )}`}
       >
         <a>
           <img src={product.image.sourceUrl} alt="product  image" />

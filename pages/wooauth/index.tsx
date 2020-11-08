@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import WooTest from '../../components/wooComerceTestComponent'
-import { MainLayout } from '../../layouts/mainLayout'
+import { MainLayout } from '../../components/layouts/mainLayout'
 
 const WooCommerceTest: FC = () => {
   return (

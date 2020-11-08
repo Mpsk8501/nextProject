@@ -47,7 +47,7 @@ const CartPageComponent = () => {
               </span>
             </div>
             <div className={classes.checkout}>
-              <Link href="/checkout">
+              <Link href="/shop/checkout">
                 <button className="btn">Proceed to Checkout</button>
               </Link>
             </div>
@@ -56,7 +56,7 @@ const CartPageComponent = () => {
       ) : (
         <div className={classes.noItem}>
           <h1 className="h1">No products</h1>
-          <Link href="/products">
+          <Link href="/shop">
             <button className="btn">Add New Product</button>
           </Link>
         </div>

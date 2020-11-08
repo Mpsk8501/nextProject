@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { removeItemFromCart, updateCart } from '../../../helpers/cartHelpers'
 import { CartItemProps } from '../../../interfaces'
+import Link from 'next/link'
 
 const CartItem = ({ cartItem, setCart }: CartItemProps) => {
   const [productCount, setProductCount] = useState(cartItem.qty)
 
   const removeHandler = () => {
     const updatedCart = removeItemFromCart(cartItem.databaseId)
-
     //@ts-ignore
     setCart(updatedCart)
   }
@@ -42,7 +42,13 @@ const CartItem = ({ cartItem, setCart }: CartItemProps) => {
         </span>
       </li>
       <li>
-        <img src={cartItem.image.sourceUrl} alt="Product image" />
+        <Link
+          href={`/shop/${encodeURIComponent(
+            cartItem.productCategorySlug
+          )}/${encodeURIComponent(cartItem.productSlug)}`}
+        >
+          <img src={cartItem.image.sourceUrl} alt="Product image" />
+        </Link>
       </li>
       <li>{cartItem.name}</li>
       <li>£{cartItem.price}</li>

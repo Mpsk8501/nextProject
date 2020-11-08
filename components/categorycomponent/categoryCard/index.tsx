@@ -5,10 +5,7 @@ const CategoryCard = ({ category }) => {
   return (
     <div className={classes.categoryCard}>
       <h1 className="h1">{category.name}</h1>
-      <Link
-        as={`/categories/${category.slug}`}
-        href={`/categories?category=${category.slug}`}
-      >
+      <Link href={`/shop/${encodeURIComponent(category.slug)}`}>
         <a>
           {category.image ? (
             <img src={category.image.sourceUrl} alt="category image" />
