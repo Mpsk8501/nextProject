@@ -1,40 +1,39 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { ProductProps } from '../../../interfaces'
 import { AppContext } from '../../context/AppContext'
-import { useMutation, useQuery, gql } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { v4 } from 'uuid'
 import { ADD_TO_CART } from '../../../mutations/cartMutation'
 import { GET_CART } from '../../../queries/cart'
 
-import {
-  addFirstProduct,
-  updateCart,
-  isProductInCart,
-  getFormattedCart,
-} from '../../../helpers/cartHelpers'
+import { getFormattedCart } from '../../../helpers/cartHelpers'
 import Link from 'next/link'
 
 const AddToCartButton = ({ product }: ProductProps) => {
   const [cart, setCart] = useContext(AppContext)
   const [isInCart, setIsItCart] = useState(false)
-  const [blockButton, setBlockButton] = useState(false)
 
   const productQryInput = {
     clientMutationId: v4(), // Generate a unique id.
     productId: product.databaseId,
   }
 
+  const onComplitedF = (data) => {
+    const updatedCart = getFormattedCart(data)
+    console.log('fff', updatedCart)
+
+    localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart))
+
+    //Update cart data in React Context.
+    setCart(updatedCart)
+  }
+
   const { loading, error, data, refetch } = useQuery(GET_CART, {
     onCompleted: () => {
-      // Update cart in the localStorage.
-      const updatedCart = getFormattedCart(data)
-      console.log('fff', updatedCart)
-
-      localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart))
-
-      //Update cart data in React Context.
-      setCart(updatedCart)
+      refetch.bind(this)
+      onComplitedF(data)
     },
+    // Update cart in the localStorage.
   })
 
   const [
@@ -48,7 +47,10 @@ const AddToCartButton = ({ product }: ProductProps) => {
       console.warn('completed ADD_TO_CART', data)
       // On Success:
       // 1. Make the GET_CART query to update the cart with new values in React context.
-      refetch()
+      refetch().then((e) => {
+        console.log(e)
+        onComplitedF(e.data)
+      })
       // 2. Show View Cart Button
       //setShowViewCart(true)
     },
@@ -56,6 +58,7 @@ const AddToCartButton = ({ product }: ProductProps) => {
 
   const handleAddToCartClick = () => {
     addToCart()
+    setIsItCart(true)
   }
 
   // useEffect(() => {

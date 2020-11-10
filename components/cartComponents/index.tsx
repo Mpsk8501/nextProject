@@ -3,9 +3,55 @@ import { useContext } from 'react'
 import { AppContext } from '../context/AppContext'
 import CartItem from './cartItem'
 import classes from './cartPageComponent.module.scss'
+import { useMutation, useQuery } from '@apollo/client'
+import { GET_CART } from '../../queries/cart'
+import { UPDATE_CART, CLEAR_CART } from '../../mutations/cartMutation'
+import { getFormattedCart, getUpdatedItems } from '../../helpers/cartHelpers'
 
 const CartPageComponent = () => {
   const [cart, setCart] = useContext(AppContext)
+
+  const onComplitedF = (data) => {
+    const updatedCart = getFormattedCart(data)
+    localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart))
+    //@ts-ignore
+    setCart(updatedCart)
+  }
+
+  const { loading, error, data, refetch } = useQuery(GET_CART, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted: () => {
+      refetch.bind(this)
+      onComplitedF(data)
+    },
+  })
+
+  const [
+    updateCart,
+    {
+      data: updateCartResponse,
+      loading: updateCartProcessing,
+      error: updateCartError,
+    },
+  ] = useMutation(UPDATE_CART, {
+    onCompleted: () => {
+      refetch().then((e) => {
+        onComplitedF(e.data)
+      })
+    },
+  })
+
+  const [
+    clearCart,
+    { data: clearCartRes, loading: clearCartProcessing, error: clearCartError },
+  ] = useMutation(CLEAR_CART, {
+    onCompleted: () => {
+      refetch().then((e) => {
+        onComplitedF(e.data)
+      })
+    },
+  })
+
   return (
     <div className="container">
       {cart ? (
@@ -26,9 +72,11 @@ const CartPageComponent = () => {
                 return (
                   <CartItem
                     //@ts-ignore
-                    setCart={setCart}
                     key={item.databaseId}
-                    cartItem={item}
+                    item={item}
+                    updateCartProcessing={updateCartProcessing}
+                    products={cart.products}
+                    updateCart={updateCart}
                   />
                 )
               })
@@ -39,10 +87,9 @@ const CartPageComponent = () => {
             <div className={classes.totalWrapper}>
               <span>Total</span>
               <span>
-                £
                 {
                   //@ts-ignore
-                  cart.totalProductPrice
+                  cart.totalProductsPrice
                 }
               </span>
             </div>

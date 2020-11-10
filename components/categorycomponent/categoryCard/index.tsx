@@ -7,10 +7,10 @@ const CategoryCard = ({ category }) => {
       <h1 className="h1">{category.name}</h1>
       <Link href={`/shop/${encodeURIComponent(category.slug)}`}>
         <a>
-          {category.image ? (
-            <img src={category.image.sourceUrl} alt="category image" />
+          {category.image && category.image.sourceUrl ? (
+            <img src={category.image.sourceUrl} alt="product  image" />
           ) : (
-            'no image'
+            <img src={'/no-image.jpg'} alt="product  image" />
           )}
         </a>
       </Link>

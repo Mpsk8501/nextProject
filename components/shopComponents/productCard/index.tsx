@@ -17,7 +17,11 @@ const ProductCard = ({ product, type }: ProductProps) => {
         )}`}
       >
         <a>
-          <img src={product.image.sourceUrl} alt="product  image" />
+          {product.image && product.image.sourceUrl ? (
+            <img src={product.image.sourceUrl} alt="product  image" />
+          ) : (
+            <img src={'/no-image.jpg'} alt="product  image" />
+          )}
         </a>
       </Link>
       <p>{product.price}</p>

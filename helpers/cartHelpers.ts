@@ -21,7 +21,6 @@ const getFormattedCart = (data) => {
   }
 
   const givenProducts = data.cart.contents.nodes
-  console.log(data)
 
   // Create an empty object.
   formattedCart = {}
@@ -34,7 +33,7 @@ const getFormattedCart = (data) => {
     const total = getFloatVal(givenProducts[i].total)
 
     product.databaseId = givenProduct.databaseId
-    //product.cartKey = givenProducts[i].key
+    product.cartKey = givenProducts[i].key
     product.name = givenProduct.name
     product.qty = givenProducts[i].quantity
     product.price = total / product.qty
@@ -43,6 +42,7 @@ const getFormattedCart = (data) => {
     product.image = {
       sourceUrl: givenProduct.image.sourceUrl,
     }
+    product.categorySlug = givenProduct.productCategories.nodes[0].slug
 
     totalProductsCount += givenProducts[i].quantity
 
@@ -56,154 +56,180 @@ const getFormattedCart = (data) => {
   return formattedCart
 }
 
-const addFirstProduct = (product: ProductPropsFunc) => {
-  const productPrice = getFloatVal(product.price)
-  const newCart = {
-    products: [],
-    totalProductCount: 1,
-    totalProductPrice: getFloatVal(product.price),
-  }
-  const newProduct = createNewProduct(product, productPrice, 1)
-  newCart.products.push(newProduct)
-  localStorage.setItem('woo-next-cart', JSON.stringify(newCart))
-  return newCart
-}
+const getUpdatedItems = (products, newQty, cartKey) => {
+  // Create an empty array.
+  const updatedItems = []
 
-const updateCart = (
-  product: ProductPropsFunc,
-  existCart,
-  qtyToBeAdded,
-  newQty = false
-) => {
-  const updatedProducts = getUpdatedProducts(
-    existCart.products,
-    product,
-    qtyToBeAdded,
-    newQty
-  )
+  // Loop through the product array.
+  products.map((cartItem) => {
+    // If you find the cart key of the product user is trying to update, push the key and new qty.
 
-  const addPrice = (total, item) => {
-    total.totalPrice += +item.totalPrice
-    total.qty += item.qty
+    if (cartItem.cartKey === cartKey) {
+      updatedItems.push({
+        key: cartItem.cartKey,
+        quantity: parseInt(newQty),
+      })
 
-    return total
-  }
-
-  const total = updatedProducts.reduce(addPrice, { totalPrice: 0, qty: 0 })
-
-  const updatedCart = {
-    products: updatedProducts,
-    totalProductCount: parseInt(total.qty),
-    totalProductPrice: parseFloat(parseFloat(total.totalPrice).toFixed(2)),
-  }
-
-  localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart))
-
-  return updatedCart
-}
-
-const getUpdatedProducts = (
-  existingProductCart,
-  product,
-  qtyToBeAdded,
-  newQty
-) => {
-  const productExistIndex = isProductInCart(
-    existingProductCart,
-    product.databaseId
-  )
-  if (productExistIndex !== -1) {
-    let updatedProducts = existingProductCart
-    let updatedProduct = updatedProducts[productExistIndex]
-    updatedProduct.qty = newQty
-      ? parseInt(newQty)
-      : parseInt(updatedProduct.qty + qtyToBeAdded)
-    updatedProduct.totalPrice = parseFloat(
-      (updatedProduct.price * updatedProduct.qty).toFixed(2)
-    )
-
-    return updatedProducts
-  } else {
-    let productPrice = getFloatVal(product.price)
-    const newProduct = createNewProduct(product, productPrice, qtyToBeAdded)
-    existingProductCart.push(newProduct)
-    return existingProductCart
-  }
-}
-
-const isProductInCart = (existingProductCart, databaseId) => {
-  const returnItemThatExist = (item, index) => {
-    if (databaseId === item.databaseId) {
-      return item
+      // Otherwise just push the existing qty without updating.
+    } else {
+      updatedItems.push({
+        key: cartItem.cartKey,
+        quantity: cartItem.qty,
+      })
     }
-  }
-  const newArr = existingProductCart.filter(returnItemThatExist)
-  return existingProductCart.indexOf(newArr[0])
+  })
+  return updatedItems
 }
 
-const createNewProduct = (
-  product: ProductPropsFunc,
-  productPrice: number,
-  qty: number
-) => {
-  return {
-    databaseId: product.databaseId,
-    image: product.image,
-    name: product.name,
-    price: productPrice,
-    qty,
-    totalPrice: productPrice * qty,
-    productSlug: product.slug,
-    productCategorySlug:
-      //@ts-ignore
-      product.categorySlug || product.productCategories.edges[0].node.slug,
-  }
-}
+// const addFirstProduct = (product: ProductPropsFunc) => {
+//   const productPrice = getFloatVal(product.price)
+//   const newCart = {
+//     products: [],
+//     totalProductCount: 1,
+//     totalProductPrice: getFloatVal(product.price),
+//   }
+//   const newProduct = createNewProduct(product, productPrice, 1)
+//   newCart.products.push(newProduct)
+//   localStorage.setItem('woo-next-cart', JSON.stringify(newCart))
+//   return newCart
+// }
 
-const removeItemFromCart = (databaseId) => {
-  const existinCart = localStorage.getItem('woo-next-cart')
-  const existinCartParse = JSON.parse(existinCart)
-  if (existinCartParse.products.length === 1) {
-    localStorage.removeItem('woo-next-cart')
-    return null
-  }
+// const updateCart = (
+//   product: ProductPropsFunc,
+//   existCart,
+//   qtyToBeAdded,
+//   newQty = false
+// ) => {
+//   const updatedProducts = getUpdatedProducts(
+//     existCart.products,
+//     product,
+//     qtyToBeAdded,
+//     newQty
+//   )
 
-  const productExistIndex = isProductInCart(
-    existinCartParse.products,
-    databaseId
-  )
+//   const addPrice = (total, item) => {
+//     total.totalPrice += +item.totalPrice
+//     total.qty += item.qty
 
-  if (productExistIndex !== -1) {
-    const productToBeRemoved = existinCartParse.products[productExistIndex]
-    const qtyToBeRemovedFromTotal = productToBeRemoved.qty
-    const priceToBeDeductedFromTotal = productToBeRemoved.totalPrice
-    const updatedCart = existinCartParse
+//     return total
+//   }
 
-    updatedCart.products.splice(productExistIndex, 1)
+//   const total = updatedProducts.reduce(addPrice, { totalPrice: 0, qty: 0 })
 
-    updatedCart.totalProductCount =
-      updatedCart.totalProductCount - qtyToBeRemovedFromTotal
+//   const updatedCart = {
+//     products: updatedProducts,
+//     totalProductCount: parseInt(total.qty),
+//     totalProductPrice: parseFloat(parseFloat(total.totalPrice).toFixed(2)),
+//   }
 
-    updatedCart.totalProductPrice =
-      updatedCart.totalProductPrice - priceToBeDeductedFromTotal
+//   localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart))
 
-    updatedCart.totalProductPrice = parseFloat(
-      updatedCart.totalProductPrice.toFixed(2)
-    )
+//   return updatedCart
+// }
 
-    localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart))
+// const getUpdatedProducts = (
+//   existingProductCart,
+//   product,
+//   qtyToBeAdded,
+//   newQty
+// ) => {
+//   const productExistIndex = isProductInCart(
+//     existingProductCart,
+//     product.databaseId
+//   )
+//   if (productExistIndex !== -1) {
+//     let updatedProducts = existingProductCart
+//     let updatedProduct = updatedProducts[productExistIndex]
+//     updatedProduct.qty = newQty
+//       ? parseInt(newQty)
+//       : parseInt(updatedProduct.qty + qtyToBeAdded)
+//     updatedProduct.totalPrice = parseFloat(
+//       (updatedProduct.price * updatedProduct.qty).toFixed(2)
+//     )
 
-    return updatedCart
-  } else {
-    return existinCartParse
-  }
-}
+//     return updatedProducts
+//   } else {
+//     let productPrice = getFloatVal(product.price)
+//     const newProduct = createNewProduct(product, productPrice, qtyToBeAdded)
+//     existingProductCart.push(newProduct)
+//     return existingProductCart
+//   }
+// }
+
+// const isProductInCart = (existingProductCart, databaseId) => {
+//   const returnItemThatExist = (item, index) => {
+//     if (databaseId === item.databaseId) {
+//       return item
+//     }
+//   }
+//   const newArr = existingProductCart.filter(returnItemThatExist)
+//   return existingProductCart.indexOf(newArr[0])
+// }
+
+// const createNewProduct = (
+//   product: ProductPropsFunc,
+//   productPrice: number,
+//   qty: number
+// ) => {
+//   return {
+//     databaseId: product.databaseId,
+//     image: product.image,
+//     name: product.name,
+//     price: productPrice,
+//     qty,
+//     totalPrice: productPrice * qty,
+//     productSlug: product.slug,
+//     productCategorySlug:
+//       //@ts-ignore
+//       product.categorySlug || product.productCategories.edges[0].node.slug,
+//   }
+// }
+
+// const removeItemFromCart = (databaseId) => {
+//   const existinCart = localStorage.getItem('woo-next-cart')
+//   const existinCartParse = JSON.parse(existinCart)
+//   if (existinCartParse.products.length === 1) {
+//     localStorage.removeItem('woo-next-cart')
+//     return null
+//   }
+
+//   const productExistIndex = isProductInCart(
+//     existinCartParse.products,
+//     databaseId
+//   )
+
+//   if (productExistIndex !== -1) {
+//     const productToBeRemoved = existinCartParse.products[productExistIndex]
+//     const qtyToBeRemovedFromTotal = productToBeRemoved.qty
+//     const priceToBeDeductedFromTotal = productToBeRemoved.totalPrice
+//     const updatedCart = existinCartParse
+
+//     updatedCart.products.splice(productExistIndex, 1)
+
+//     updatedCart.totalProductCount =
+//       updatedCart.totalProductCount - qtyToBeRemovedFromTotal
+
+//     updatedCart.totalProductPrice =
+//       updatedCart.totalProductPrice - priceToBeDeductedFromTotal
+
+//     updatedCart.totalProductPrice = parseFloat(
+//       updatedCart.totalProductPrice.toFixed(2)
+//     )
+
+//     localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart))
+
+//     return updatedCart
+//   } else {
+//     return existinCartParse
+//   }
+// }
 
 export {
-  getFloatVal,
-  addFirstProduct,
-  updateCart,
-  isProductInCart,
-  removeItemFromCart,
+  //getFloatVal,
+  //addFirstProduct,
+  //updateCart,
+  //isProductInCart,
+  //removeItemFromCart,
+  getUpdatedItems,
   getFormattedCart,
 }

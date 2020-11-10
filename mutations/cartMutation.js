@@ -38,27 +38,13 @@ const UPDATE_CART = gql`
           databaseId
           name
           description
-
           slug
-
           image {
             sourceUrl
           }
         }
         quantity
         total
-      }
-      removed {
-        product {
-          id
-          databaseId
-        }
-      }
-      updated {
-        product {
-          id
-          databaseId
-        }
       }
     }
   }

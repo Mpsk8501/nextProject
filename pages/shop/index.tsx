@@ -26,6 +26,9 @@ export const getStaticProps: GetStaticProps = async () => {
       variables: { id },
     })
     console.log(result)
+    if (!result.data.productTag) {
+      return {}
+    }
 
     return result.data.productTag.products.nodes.map((product) => {
       return {

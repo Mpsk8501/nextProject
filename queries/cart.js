@@ -5,6 +5,7 @@ const GET_CART = gql`
     cart {
       contents {
         nodes {
+          key
           product {
             name
             description
@@ -13,8 +14,12 @@ const GET_CART = gql`
             image {
               sourceUrl
             }
+            productCategories {
+              nodes {
+                slug
+              }
+            }
           }
-
           quantity
           total
         }

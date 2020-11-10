@@ -1,34 +1,64 @@
 import { useState } from 'react'
-import { removeItemFromCart, updateCart } from '../../../helpers/cartHelpers'
-import { CartItemProps } from '../../../interfaces'
+import { getUpdatedItems } from '../../../helpers/cartHelpers'
+import { v4 } from 'uuid'
 import Link from 'next/link'
 
-const CartItem = ({ cartItem, setCart }: CartItemProps) => {
-  const [productCount, setProductCount] = useState(cartItem.qty)
+const CartItem = ({
+  item,
+  products,
+  updateCartProcessing,
+  handleRemoveProductClick,
+  updateCart,
+}) => {
+  const [productCount, setProductCount] = useState(item.qty)
 
-  const removeHandler = () => {
-    const updatedCart = removeItemFromCart(cartItem.databaseId)
-    //@ts-ignore
-    setCart(updatedCart)
-  }
+  // const removeHandler = () => {
+  //   const updatedCart = removeItemFromCart(cartItem.databaseId)
+  //   //@ts-ignore
+  //   setCart(updatedCart)
+  // }
 
-  const handleQtyChange = (event) => {
+  const handleQtyChange = (event, isRemove = false) => {
     if (process.browser) {
-      const newQty = event.target.value
+      if (updateCartProcessing) {
+        return
+      }
+      let newQty = parseInt(event.target.value)
+      if (!newQty) {
+        newQty = 1
+      } else if (newQty > 10) {
+        newQty = 10
+      } else if (newQty < 1) {
+        newQty = 1
+      }
+      if (isRemove) {
+        newQty = 0
+      }
       setProductCount(newQty)
-      const existingCart = localStorage.getItem('woo-next-cart')
-      const existingCartParse = JSON.parse(existingCart)
-      //@ts-ignore
-      const updatedCart = updateCart(cartItem, existingCartParse, false, newQty)
-      //@ts-ignore
-      setCart(updatedCart)
+      if (products.length) {
+        const updatedItems = getUpdatedItems(products, newQty, item.cartKey)
+        console.log(updatedItems)
+
+        updateCart({
+          variables: {
+            input: {
+              clientMutationId: v4(),
+              items: updatedItems,
+            },
+          },
+        })
+      }
     }
   }
 
   return (
     <ul>
       <li>
-        <span onClick={removeHandler}>
+        <span
+          onClick={(e) => {
+            handleQtyChange(e, true)
+          }}
+        >
           <svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
@@ -44,14 +74,14 @@ const CartItem = ({ cartItem, setCart }: CartItemProps) => {
       <li>
         <Link
           href={`/shop/${encodeURIComponent(
-            cartItem.productCategorySlug
-          )}/${encodeURIComponent(cartItem.productSlug)}`}
+            item.categorySlug
+          )}/${encodeURIComponent(item.slug)}`}
         >
-          <img src={cartItem.image.sourceUrl} alt="Product image" />
+          <img src={item.image.sourceUrl} alt="Product image" />
         </Link>
       </li>
-      <li>{cartItem.name}</li>
-      <li>£{cartItem.price}</li>
+      <li>{item.name}</li>
+      <li>£{item.price}</li>
       <li>
         <input
           onChange={handleQtyChange}
@@ -61,7 +91,7 @@ const CartItem = ({ cartItem, setCart }: CartItemProps) => {
           type="number"
         />
       </li>
-      <li>£{cartItem.totalPrice}</li>
+      <li>{item.totalPrice}</li>
     </ul>
   )
 }
