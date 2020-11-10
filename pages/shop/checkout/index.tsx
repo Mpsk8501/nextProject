@@ -1,9 +1,11 @@
 import { ShopLayout } from '../../../components/layouts/shopLayout'
-import CheckoutComponent from '../../../components/checkoutComponent'
+import CheckoutForm from '../../../components/checkout/CheckoutForm'
 const CheckoutPage = () => {
   return (
     <ShopLayout>
-      <CheckoutComponent />
+      <div className="container">
+        <CheckoutForm />
+      </div>
     </ShopLayout>
   )
 }

@@ -1,4 +1,4 @@
-import { ProductPropsFunc } from '../interfaces'
+import { v4 } from 'uuid'
 
 const getFloatVal = (string: string): number => {
   let floatValue = string.match(/[+-]?\d+(\.\d+)?/g)
@@ -40,7 +40,10 @@ const getFormattedCart = (data) => {
     product.totalPrice = givenProducts[i].total
     product.slug = givenProduct.slug
     product.image = {
-      sourceUrl: givenProduct.image.sourceUrl,
+      sourceUrl:
+        givenProduct.image && givenProduct.image.sourceUrl
+          ? givenProduct.image.sourceUrl
+          : '/no-image.jpg',
     }
     product.categorySlug = givenProduct.productCategories.nodes[0].slug
 
@@ -79,6 +82,45 @@ const getUpdatedItems = (products, newQty, cartKey) => {
     }
   })
   return updatedItems
+}
+
+export const createCheckoutData = (order) => {
+  const checkoutData = {
+    clientMutationId: v4(),
+
+    billing: {
+      firstName: order.firstName,
+      lastName: order.lastName,
+      address1: order.address1,
+      address2: order.address2,
+      city: order.city,
+      country: order.country,
+      state: order.state,
+      postcode: order.postcode,
+      email: order.email,
+      phone: order.phone,
+      company: order.company,
+    },
+    shipping: {
+      firstName: order.firstName,
+      lastName: order.lastName,
+      address1: order.address1,
+      address2: order.address2,
+      city: order.city,
+      country: order.country,
+      state: order.state,
+      postcode: order.postcode,
+      email: order.email,
+      phone: order.phone,
+      company: order.company,
+    },
+    shipToDifferentAddress: false,
+    paymentMethod: order.paymentMethod,
+    isPaid: false,
+    transactionId: 'hjkhjkhsdsdiui',
+  }
+
+  return checkoutData
 }
 
 // const addFirstProduct = (product: ProductPropsFunc) => {

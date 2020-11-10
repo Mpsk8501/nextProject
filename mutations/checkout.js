@@ -1,23 +1,22 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag'
 
 const CHECKOUT_MUTATION = gql`
-mutation CHECKOUT_MUTATION( $input: CheckoutInput! ) {
-  checkout(input: $input) {
-    clientMutationId
-    order {
-      id
-      orderId
-      refunds {
-        nodes {
-          amount
+  mutation CHECKOUT_MUTATION($input: CheckoutInput!) {
+    checkout(input: $input) {
+      clientMutationId
+      order {
+        id
+        refunds {
+          nodes {
+            amount
+          }
         }
+        status
       }
-      status
+      result
+      redirect
     }
-    result
-    redirect
   }
-}
-`;
+`
 
-export default CHECKOUT_MUTATION;
+export { CHECKOUT_MUTATION }

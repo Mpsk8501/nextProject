@@ -10,7 +10,12 @@ const SingleProductComponent = ({ product }: ProductProps) => {
       <div className="container">
         <h1 className="h1">{product.name}</h1>
         <div className={classes.productBlock}>
-          <img src={product.image.sourceUrl} alt="product  image" />
+          {product.image && product.image.sourceUrl ? (
+            <img src={product.image.sourceUrl} alt="product  image" />
+          ) : (
+            <img src={'/no-image.jpg'} alt="product  image" />
+          )}
+
           <div className={classes.textBlock}>
             <p className="p">{product.description}</p>
             <p className="p">
