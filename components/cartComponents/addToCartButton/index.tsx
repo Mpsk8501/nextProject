@@ -44,7 +44,7 @@ const AddToCartButton = ({ product }: ProductProps) => {
       input: productQryInput,
     },
     onCompleted: () => {
-      console.warn('completed ADD_TO_CART', data)
+      console.warn('completed ADD_TO_CART', cartData)
       // On Success:
       // 1. Make the GET_CART query to update the cart with new values in React context.
       refetch().then((e) => {
