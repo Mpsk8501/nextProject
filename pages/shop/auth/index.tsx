@@ -3,9 +3,10 @@ import { v4 } from 'uuid'
 import { useMutation, useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
 import client from '../../../components/ApolloClient'
+import { useState } from 'react'
 
 const CREATE_USER = gql`
-  mutation RegisterUser($input: RegisterCustomerInput!) {
+  mutation registerUser($input: RegisterCustomerInput!) {
     registerCustomer(input: $input) {
       customer {
         jwtAuthToken
@@ -15,17 +16,58 @@ const CREATE_USER = gql`
   }
 `
 const AUTH_USER = gql`
-  mutation RegisterUser($input: LoginUserInput!) {
+  mutation LoginUser($input: LoginInput!) {
     login(input: $input) {
+      authToken
+      sessionToken
       user {
-        jwtAuthToken
-        jwtRefreshToken
+        id
+        name
       }
     }
   }
 `
 
+const DELETE_USER = gql`
+  mutation delUser($input: DeleteUserInput!) {
+    deleteUser(input: $input) {
+      user {
+        username
+      }
+    }
+  }
+`
+const GET_Mail = gql`
+  query {
+    user(id: "dXNlcjoz") {
+      email
+      name
+    }
+  }
+`
+
 const AuthPage = () => {
+  const [userName, setUserName] = useState('user')
+  const [userPass, setUserPass] = useState('123456')
+
+  const onComplitedF = (data) => {
+    console.log('fff', data)
+  }
+
+  const { loading: er, error: sd, data: scsfsf, refetch } = useQuery(GET_Mail, {
+    client,
+    onCompleted: () => {
+      refetch.bind(this)
+      onComplitedF(scsfsf)
+    },
+    // Update cart in the localStorage.
+  })
+  const getMail = () => {
+    refetch().then((e) => {
+      onComplitedF(e)
+    })
+  }
+
   const [register, { data, loading, error }] = useMutation(CREATE_USER, {
     variables: {
       input: {
@@ -38,10 +80,7 @@ const AuthPage = () => {
     client,
     onCompleted: (data) => {
       console.warn('completed Register', data)
-      const token = localStorage.setItem(
-        'token',
-        data.registerCustomer.customer.jwtAuthToken
-      )
+      localStorage.setItem('token', data.registerCustomer.customer.jwtAuthToken)
     },
   })
 
@@ -52,13 +91,32 @@ const AuthPage = () => {
     variables: {
       input: {
         clientMutationId: v4(),
-        username: 'mpakTest',
-        password: '123456',
+        username: userName,
+        password: userPass,
       },
     },
     client,
-    onCompleted: () => {
-      console.warn('completed Auth', data)
+    onCompleted: (e) => {
+      console.warn('completed Auth', e)
+      localStorage.setItem('token', e.login.authToken)
+      localStorage.setItem('woo-session', e.login.sessionToken)
+    },
+  })
+
+  const [
+    deleteUser,
+    { data: authData2, loading: authLoad2, error: authErr2 },
+  ] = useMutation(DELETE_USER, {
+    variables: {
+      input: {
+        clientMutationId: v4(),
+        id: '3',
+      },
+    },
+    client,
+    onCompleted: (e) => {
+      console.warn('completed Auth', e)
+      localStorage.setItem('token', e.login.authToken)
     },
   })
 
@@ -67,6 +125,9 @@ const AuthPage = () => {
   }
   const authUser = () => {
     auth()
+  }
+  const delUser = () => {
+    deleteUser()
   }
 
   return (
@@ -77,6 +138,12 @@ const AuthPage = () => {
         </button>
         <button onClick={authUser} className="btn">
           Auth
+        </button>
+        <button onClick={delUser} className="btn">
+          Delete
+        </button>
+        <button onClick={getMail} className="btn">
+          getMail
         </button>
       </div>
     </ShopLayout>

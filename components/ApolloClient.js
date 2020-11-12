@@ -82,11 +82,13 @@ const authLink = setContext((_, { headers }) => {
   if (process.browser) {
     // get the authentication token from local storage if it exists
     const token = localStorage.getItem('token')
+    const session = localStorage.getItem('woo-session')
     // return the headers to the context so httpLink can read them
     return {
       headers: {
         ...headers,
         authorization: token ? `Bearer ${token}` : '',
+        'woocommerce-session': `Session ${session}`,
       },
     }
   }
