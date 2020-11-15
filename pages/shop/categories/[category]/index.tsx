@@ -1,9 +1,9 @@
-import client from '../../../components/ApolloClient'
-import ShopComponent from '../../../components/shopComponents'
-import { ShopLayout } from '../../../components/layouts/shopLayout'
+import client from '../../../../components/ApolloClient'
+import ShopComponent from '../../../../components/shopComponents'
+import { ShopLayout } from '../../../../components/layouts/shopLayout'
 import { GetStaticProps, InferGetStaticPropsType, GetStaticPaths } from 'next'
-import { CATEGORY_SLUGS } from '../../../queries/slugs'
-import { PRODUCTS_QUERY_BY_CATEGORY } from '../../../queries/products'
+import { CATEGORY_SLUGS } from '../../../../queries/slugs'
+import { PRODUCTS_QUERY_BY_CATEGORY } from '../../../../queries/products'
 
 const Category: InferGetStaticPropsType<typeof getStaticProps> = ({
   categoryGoods,

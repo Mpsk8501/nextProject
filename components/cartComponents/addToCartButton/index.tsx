@@ -33,7 +33,6 @@ const AddToCartButton = ({ product }: ProductProps) => {
       refetch.bind(this)
       onComplitedF(data)
     },
-    // Update cart in the localStorage.
   })
 
   const [
@@ -44,15 +43,10 @@ const AddToCartButton = ({ product }: ProductProps) => {
       input: productQryInput,
     },
     onCompleted: () => {
-      console.warn('completed ADD_TO_CART', cartData)
-      // On Success:
-      // 1. Make the GET_CART query to update the cart with new values in React context.
       refetch().then((e) => {
         console.log(e)
         onComplitedF(e.data)
       })
-      // 2. Show View Cart Button
-      //setShowViewCart(true)
     },
   })
 
@@ -61,37 +55,6 @@ const AddToCartButton = ({ product }: ProductProps) => {
     setIsItCart(true)
   }
 
-  // useEffect(() => {
-  //   if (process.browser) {
-  //     const existCart = localStorage.getItem('woo-next-cart')
-  //     if (existCart) {
-  //       const existCartParse = JSON.parse(existCart)
-  //       if (
-  //         isProductInCart(existCartParse.products, product.databaseId) !== -1
-  //       ) {
-  //         setIsItCart(true)
-  //       }
-  //     }
-  //   }
-  // }, [])
-
-  // const handleAddToCartClick = () => {
-  //   if (process.browser) {
-  //     const existCart = localStorage.getItem('woo-next-cart')
-  //     if (existCart) {
-  //       const existCartParse = JSON.parse(existCart)
-  //       const qtyToBeAdded = 1
-  //       const updatedCart = updateCart(product, existCartParse, qtyToBeAdded)
-  //       //@ts-ignore
-  //       setCart(updatedCart)
-  //     } else {
-  //       const newCart = addFirstProduct(product)
-  //       //@ts-ignore
-  //       setCart(newCart)
-  //     }
-  //     setIsItCart(true)
-  //   }
-  // }
   return (
     <>
       {addLoading || loading ? (

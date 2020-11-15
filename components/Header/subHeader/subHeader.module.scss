@@ -1,9 +1,10 @@
 .subHeader {
   height: 40px;
   background-color: var(--button-hoverBG);
+
   .wrapper {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
   }
 }

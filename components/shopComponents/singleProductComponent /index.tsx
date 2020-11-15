@@ -21,7 +21,7 @@ const SingleProductComponent = ({ product }: ProductProps) => {
             <p className="p">
               <strong>{product.price}</strong>
             </p>
-            <Link href={`/shop/${encodeURIComponent(categorySlug)}`}>
+            <Link href={`/shop/categories/${encodeURIComponent(categorySlug)}`}>
               <a className={'btn'}>To category</a>
             </Link>
           </div>

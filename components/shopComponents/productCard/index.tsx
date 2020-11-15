@@ -12,9 +12,9 @@ const ProductCard = ({ product, type }: ProductProps) => {
       {type ? <span className={classes.tag}>{type}</span> : null}
       <h1 className="h1">{product.name}</h1>
       <Link
-        href={`/shop/${encodeURIComponent(categorySlug)}/${encodeURIComponent(
-          product.slug
-        )}`}
+        href={`/shop/categories/${encodeURIComponent(
+          categorySlug
+        )}/${encodeURIComponent(product.slug)}`}
       >
         <a>
           {product.image && product.image.sourceUrl ? (

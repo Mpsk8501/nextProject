@@ -1,9 +1,9 @@
 import { GetStaticProps, InferGetStaticPropsType, GetStaticPaths } from 'next'
-import client from '../../../../components/ApolloClient'
-import SingleProductComponent from '../../../../components/shopComponents/singleProductComponent '
-import { ShopLayout } from '../../../../components/layouts/shopLayout'
-import { PRODUCTS_CATEGORIES_SLUGS_QUERY } from '../../../../queries/slugs'
-import { PRODUCT_QUERY_BY_SLUG } from '../../../../queries/products'
+import client from '../../../../../components/ApolloClient'
+import SingleProductComponent from '../../../../../components/shopComponents/singleProductComponent '
+import { ShopLayout } from '../../../../../components/layouts/shopLayout'
+import { PRODUCTS_CATEGORIES_SLUGS_QUERY } from '../../../../../queries/slugs'
+import { PRODUCT_QUERY_BY_SLUG } from '../../../../../queries/products'
 
 const SingleProductPage: InferGetStaticPropsType<typeof getStaticProps> = ({
   product,
